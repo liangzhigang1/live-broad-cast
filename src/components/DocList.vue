@@ -1,7 +1,7 @@
 <!-- 跑马灯组件，此组件不需要预置dom，只需在创建的时候指定挂载dom（即要在哪个dom里面跑） -->
 <template>
   <div class="bjy-sidebar" :class="{ 'bjy-active': show }">
-    <div @click="show = !show" class="bjy-toggle-btn">文档列表</div>
+    <!-- <div @click="show = !show" class="bjy-toggle-btn">文档列表</div> -->
     <div class="bjy-doc-list"></div>
   </div>
 </template>
@@ -10,7 +10,7 @@
 export default {
   data() {
     return {
-      show: false,
+      show: true,
     };
   },
   mounted() {
@@ -25,14 +25,14 @@ export default {
 
 <style lang="scss" scoped>
 .bjy-sidebar {
-  position: absolute;
+  // position: absolute;
   top: 0;
   bottom: 0;
   z-index: -1;
   left: 0;
   width: 160px;
   background: #fff;
-  box-shadow: 5px -5px 5px 5px #aaa;
+  // box-shadow: 5px -5px 5px 5px #aaa;
 
   &.bjy-active {
     left: -160px;
