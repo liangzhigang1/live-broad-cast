@@ -2,7 +2,10 @@
 <template>
   <div class="bjy-sidebar" :class="{ 'bjy-active': show }">
     <!-- <div @click="show = !show" class="bjy-toggle-btn">文档列表</div> -->
-    <div class="bjy-doc-list"></div>
+    <!-- <div class="bjy-doc-list"></div> -->
+    <div id="catalogue">
+        <div class="placeholder"></div>
+    </div>
   </div>
 </template>
 
@@ -15,9 +18,9 @@ export default {
   },
   mounted() {
     BJY.Catalogue.create({
-      element: $(".bjy-doc-list"),
+      element: $("#catalogue .placeholder"),
       thumbnailWidth: 100,
-      hasWhiteboard: true,
+      // hasWhiteboard: true,
     });
   },
 };

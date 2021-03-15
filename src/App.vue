@@ -4,7 +4,7 @@
     <div v-if="loaded" ref="main" id="main">
       <HorseLamp />
       <div class="class-panel">
-        <WhiteBorad />
+          <TeacherPlayer v-show="!showStartBtn" />
 
         <div v-if="showStartBtn" class="start-btn" @click="handleClassStart">上课</div>
       </div>
@@ -15,7 +15,8 @@
       <div class="media-panel">
         <div class="wrap">
           <!-- 老师播放器 -->
-          <TeacherPlayer />
+        <WhiteBorad />
+
           <!-- 互动区 -->
           <InteractionPanel />
         </div>
@@ -23,9 +24,7 @@
         <!-- <DocList v-if="isTeacher" /> -->
       </div>
       <div class="zuoye">
-        <div class="">
-
-        </div>
+        <swiper></swiper>
       </div>
       <div class="footer">
         <SettingPanel />
@@ -59,6 +58,8 @@ import HorseLamp from "./components/HorseLamp";
 import DocList from "./components/DocList";
 // 话术
 import language from "./language/main.js";
+// swiper
+import swiper from './components/swiper'
 
 const eventEmitter = BJY.eventEmitter;
 const auth = BJY.auth;
@@ -77,6 +78,7 @@ export default {
     HorseLamp,
     ModalPanel,
     DocList,
+    swiper
   },
   data() {
     return {
@@ -138,7 +140,6 @@ export default {
   created() {
     // 绑定事件
     let $body = $("body");
-
     store.watch(
       "class.started",
       (started) => {
@@ -146,7 +147,6 @@ export default {
       },
       true
     );
-
     eventEmitter
       .one(eventEmitter.CLASSROOM_CONNECT_TRIGGER, (event, data) => {
         // 初始化扩展
@@ -383,6 +383,7 @@ export default {
       position: absolute;
       top: 0;
       left: 0;
+      padding: 0 15px;
       right: 450px;
       bottom: 180px;
       background-image: url("./assets/img/class-panel-bg.jpg");
@@ -394,12 +395,12 @@ export default {
         bottom: 0;
         right: 0;
         margin: auto;
-        background: #1795ff;
+        background: blue;
         border-radius: 5px;
         width: 100px;
         height: 50px;
         line-height: 50px;
-        color: #fff;
+        color: red;
         text-align: center;
         font-size: 22px;
         cursor: pointer;
@@ -455,13 +456,14 @@ export default {
     .zuoye {
       position: absolute;
       left: 0;
+      // width: 100%;
       right: 290px;
       bottom: 40px;
-      height: 100px;
-      display: flex;
-      justify-content: space-between;
-      padding: 0 15px;
-      align-items: center;
+      height: 140px;
+      // display: flex;
+      // justify-content: space-between;
+      // padding: 0 15px;
+      // align-items: center;
       font-size: 15px;
       color: #bdc6cf;
       z-index: 0;

@@ -1,18 +1,18 @@
 <template>
   <div id="whiteboard">
     <div class="placeholder"></div>
-    <div v-if="canChangePage" class="pre-page">
+    <!-- <div v-if="canChangePage" class="pre-page">
       <span class="icon-chevron-left" :class="{ forbid: !canPrePage }"><</span>
-    </div>
-    <div v-if="canChangePage" class="next-page">
+    </div> -->
+    <!-- <div v-if="canChangePage" class="next-page">
       <span class="icon-chevron-right" :class="{ forbid: !canNextPage }">></span>
-    </div>
+    </div> -->
 
-    <div v-show="canPaint" class="bjy-toolbar">
+    <!-- <div v-show="canPaint" class="bjy-toolbar">
       <div class="bjy-toolbar-placeholder">
         
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -172,8 +172,9 @@ export default {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 30px;
-  right: 30px;
+  height: 200px;
+  left: 0px;
+  right: 0px;
 
   .bjy-toolbar {
     position: absolute;
