@@ -7,6 +7,7 @@ import { MessageBox, Message } from 'element-ui'
 
 
 // const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
+const baseUrl = 'https://tiansujing.at.baijiayun.com'
 /**
  * HTTP请求对象
  */

@@ -1,5 +1,10 @@
 <template>
   <div v-show="visible" id="doc-manage">
+    <div style="position: relative">
+      <div @click="visible = false" style="cursor: pointer;position: absolute;top: 3px;right: 7px;z-index: 10;">
+        <i style="font-size: 24px" class="el-icon-close"></i>
+      </div>
+    </div>
     <div id="bjy-document-manage"></div>
   </div>
 </template>
@@ -7,6 +12,8 @@
 <script>
 const eventEmitter = BJY.eventEmitter;
 const auth = BJY.auth;
+import { _bindDocApi } from '../../api/doc/docApi'
+let store = BJY.store;
 
 export default {
   components: {},
@@ -22,10 +29,41 @@ export default {
     close() {
       this.visible = false;
     },
+    swap(presenterCameraNode, whiteboardNode) {
+      var presenterCameraParentNode = presenterCameraNode.parentNode;
+      var whiteboardParentNode = whiteboardNode.parentNode;
+      var presenterCameraPlaceholder = document.createElement("div");
+      var whiteboardPlaceholder = document.createElement("div");
+
+      presenterCameraParentNode.insertBefore(
+        presenterCameraPlaceholder,
+        presenterCameraNode
+      );
+      whiteboardParentNode.insertBefore(whiteboardPlaceholder, whiteboardNode);
+
+      whiteboardNode &&
+        presenterCameraParentNode.insertBefore(
+          whiteboardNode,
+          presenterCameraPlaceholder
+        );
+      presenterCameraNode &&
+        whiteboardParentNode.insertBefore(presenterCameraNode, whiteboardPlaceholder);
+
+      presenterCameraParentNode.removeChild(presenterCameraPlaceholder);
+      whiteboardParentNode.removeChild(whiteboardPlaceholder);
+    },
+    // 切换ppt与主讲视频位置，如需同步切换，可通过自定义信令实现
+    pptVideoSwitch() {
+      const presenterDom = $(".bjy-player-theme-default")[0];
+      const whiteboardDom = $(".bjy-whiteboard")[0];
+      this.swap(presenterDom, whiteboardDom);
+      eventEmitter.trigger(eventEmitter.WINDOW_RESIZE);
+    },
   },
   created() {
   },
   mounted() {
+    var _this = this;
     // 上传文件最大字节
     var MAXSIZE = 1000000 * 5;
     // 创建文档管理组件
@@ -80,10 +118,20 @@ export default {
           // data.doc 文档对象
           console.log('33333333');
       },
-      onFileOpenClick: function () {
+      onFileOpenClick: function (data) {
           // data.index  文档在列表中的索引
           // data.doc 文档对象
-          console.log('444444444');
+          console.log('4444444444', data);
+          console.log('444444444', store.get("class.xx"));
+          if (store.get("class.xx") == true) {
+            _this.pptVideoSwitch();
+          }
+          store.set("class.xx", false);
+          // let params = { partner_id: 12345678, room_id: 19112041735674, fid: 124229567, timestamp: 1615996147, sign: '53df87fc8d9bcf018269f0c6328a71cf'}
+          // _bindDocApi(params).then((response) => {
+          //   console.log('response' , response);
+          // })
+
       },
       onTabChange: function () {
           // data.index  文档在列表中的索引

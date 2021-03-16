@@ -34,9 +34,12 @@
         <div class="user-list" :class="{ active: checkActive('user') }">
           <UserList />
         </div>
+
         <!-- 聊天 -->
         <div class="message-list" :class="{ active: checkActive('message') }">
+
           <MessageList />
+          
         </div>
         <!-- 发言列表 -->
         <div class="action-list" :class="{ active: checkActive('action') }">

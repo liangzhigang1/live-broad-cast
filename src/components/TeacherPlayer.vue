@@ -72,13 +72,14 @@ export default {
       presenterCameraParentNode.removeChild(presenterCameraPlaceholder);
       whiteboardParentNode.removeChild(whiteboardPlaceholder);
     },
-
     // 切换ppt与主讲视频位置，如需同步切换，可通过自定义信令实现
     pptVideoSwitch() {
       const presenterDom = $(".bjy-player-theme-default")[0];
       const whiteboardDom = $(".bjy-whiteboard")[0];
       this.swap(presenterDom, whiteboardDom);
       eventEmitter.trigger(eventEmitter.WINDOW_RESIZE);
+      store.set("class.xx", !store.get("class.xx"));
+
     },
   },
   created() {

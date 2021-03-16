@@ -20,6 +20,7 @@ export default {
   methods: {
     // 生成浮层
     setLayer(useParameterUser, e) {
+      console.log('11111');
       let ele = $(".bjy-user-layer");
       if (!this.userLayerInstance || (this.userLayerInstance && !ele[0])) {
         if (this.userLayerInstance && !ele[0]) {
@@ -89,8 +90,8 @@ export default {
         this.userLayerInstance.set("user", this.lastUser);
       }
       $(".bjy-user-layer").css({
-        top: e.originalEvent.clientY + 10 + "px",
-        left: e.originalEvent.clientX - 150 + "px",
+        top: e.originalEvent.clientY + 0 + "px",
+        left: e.originalEvent.clientX  + "px",
       });
 
       $(".bjy-user-layer").toggle();
@@ -145,7 +146,7 @@ export default {
         // 组内用户不允许被强制发言
         return BJY.auth.isTeacher() && (target ? !target.group : true);
       };
-      $(".user-list").delegate(".bjy-user-item", "click", function (e) {
+      $(".user-list").delegate(".bjy-user-item", "mouseover", function (e) {
         event.stopPropagation();
         let number = e.currentTarget.dataset.number;
         let user = BJY.data.user.findByNumber(number);

@@ -9,7 +9,7 @@
         <div v-if="showStartBtn" class="start-btn" @click="handleClassStart">上课</div>
       </div>
       <div class="kejian">
-        <DocList v-if="isTeacher" />
+        <DocList v-show="isTeacher" />
       </div>
 
       <div class="media-panel">
@@ -163,10 +163,22 @@ export default {
       .on(eventEmitter.LOGIN_CONFLICT, () => {
         alert(language.LOGIN_CONFLICT);
       })
+      .on(
+        eventEmitter.MESSAGE_SEND_FORBID_ALL_CHANGE,
+        function (event, data) {
+            console.log('xxxxxxxxxx', data);
+            if (data.forbidAll) {
+                // 是否全体禁言
+            } else {
+              data.forbidAll = true
+            }
+        }
+    )
       // 监听初始化事件，初始化组件
       // 请将所有的组件创建逻辑写于此回调函数之中
       .one(eventEmitter.VIEW_RENDER_TRIGGER, () => {
         // 注意，在VIEW_RENDER_TRIGGER事件触发后再去加载教室里面的组件
+        store.set("class.xx", true);
         this.loaded = true;
         this.isTeacher = auth.isTeacher();
         eventEmitter.trigger(eventEmitter.DOC_ALL_REQ);
@@ -273,6 +285,7 @@ export default {
       BJY.init({
         env: options.env,
         privateDomainPrefix: options.prefixName,
+        // privateDomainPrefix: 'e83228320',
         class: classOption,
         user: {
           number: options.user_number,

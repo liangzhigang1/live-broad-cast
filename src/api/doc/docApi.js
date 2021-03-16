@@ -1,10 +1,10 @@
 import { _get, _post, _queryPage } from '../../utils/BaseApi'
 
 /**
- * 添加接口
+ * 关联文档到教室
  * @param {*} params 
  */
-export const _saveApi = (params = {}) => _post({url: '/openapi/doc/bindDoc', params, token: true})
+export const _bindDocApi = (params = {}) => _post({url: '/openapi/doc/bindDoc', params, token: true})
 
 
 // https://${private_domain}.at.baijiayun.com/openapi/doc/bindDoc

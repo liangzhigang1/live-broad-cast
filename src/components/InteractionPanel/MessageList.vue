@@ -4,6 +4,7 @@
     </div>
     <div class="message-list">
     </div>
+    <div @click="stopSay" class="xx">全体禁言</div>
     <div class="message-sender">
     </div>
   </div>
@@ -17,9 +18,24 @@ const eventEmitter = BJY.eventEmitter;
 
 export default {
   data () {
-    return {}
+    return {
+      stop: false,
+    }
   },
-  methods: {},
+  methods: {
+    stopSay () {
+      var _this = this
+      this.stop = !this.stop
+      console.log('222222222222222');
+      eventEmitter.trigger(eventEmitter.MESSAGE_SEND_FORBID_ALL_CHANGE_TRIGGER, {
+        value: _this.stop,
+      });
+      eventEmitter.trigger(eventEmitter.SPEAK_APPLY_FORBID_ALL_CHANGE_TRIGGER, {
+        value: _this.stop,
+      });
+      console.log(eventEmitter,' sss');
+    }
+  },
   created () {
     // 收到新消息时tab栏对应tab给出提示
     eventEmitter.on(
@@ -133,9 +149,15 @@ export default {
   }
 
   .bjy-message-list {
-    bottom: 110px;
+    bottom: 130px;
     height: unset;
     top: 32px;
+  }
+  .xx {
+    position: absolute;
+    bottom: 120px;
+    right: 10px;
+    z-index: 100000;
   }
 
   .bjy-message-sender {

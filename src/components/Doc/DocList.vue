@@ -15,9 +15,13 @@
 
 <script>
 import DocManage from './DocManage'
+let store = BJY.store;
+import language from "../../language/main";
+
 export default {
   components: {
-    DocManage
+    DocManage,
+    language
   },
   data() {
     return {
@@ -26,6 +30,11 @@ export default {
   },
   methods: {
     showKeJian () {
+      if (!store.get("class.started")) {
+          // 针对教室状态给出相应的提示，你可以使用任何你喜欢的UI来处理他们，这里我使用的是自定义的全局tip，下同
+          this.$Toast(language.TIP_CLASS_NOT_START);
+          return;
+        }
       this.$refs.docManage.open()
     }
   },
