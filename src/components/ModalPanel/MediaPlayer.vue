@@ -2,7 +2,7 @@
 <template>
 
   <div v-show="visible" id="media-player" >
-    
+  111111  
   </div>
 </template>
 

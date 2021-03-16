@@ -55,7 +55,7 @@ import ModalPanel from "./components/ModalPanel";
 // 跑马灯组件
 import HorseLamp from "./components/HorseLamp";
 // 文档列表
-import DocList from "./components/DocList";
+import DocList from "./components/Doc/DocList";
 // 话术
 import language from "./language/main.js";
 // swiper
@@ -193,6 +193,7 @@ export default {
         if (auth.isWebRTC()) {
           BJY.ScreenShareExtensionWebrtc.init();
         }
+
       })
       .one(eventEmitter.LOADING_PANEL_END, () => {
         // 进度条加载完成再显示ui
@@ -230,20 +231,6 @@ export default {
   },
   methods: {
     init() {
-      console.log(
-        "******************************************************************************"
-      );
-      console.log("*   欢迎使用 BJY JS SDK - 百家云直播 - " + BJY.version);
-      console.log("*   API 文档：https://www.baijiayun.com/js-sdk/doc/#/README");
-      console.log("*   版本更新日志：https://www.baijiayun.com/js-sdk/doc/#/change-log");
-      console.log(
-        "*   常见问题：https://www.baijiayun.com/js-sdk/doc/#/live?id=%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98"
-      );
-      console.log("*   注意事项：自己创建教室测试时，注意非webrtc类型教室传入webrtc: 0");
-      console.log("*   sign签名规则：https://dev.baijiayun.com/wiki/detail/1");
-      console.log(
-        "******************************************************************************"
-      );
       // 默认demo教室-学生端
       var options = {
         prefixName: "tiansujing",
@@ -266,14 +253,9 @@ export default {
         });
       }
 
-      // debug 模式支持输入传送门链接进入
-      // 非webrtc大班课需要在url后拼上 &webrtc=0
-      if (location.href.includes("debug=1")) {
-        var url = prompt("输入教室链接进入教室");
-        options = Object.assign(options, this.urlParser(url));
-        console.log(options);
-      }
-
+      var url = location.href;
+      options = Object.assign(options, this.urlParser(url));
+      console.log(options);
       var classOption = {
         // 必须为字符串
         id: options.room_id,
@@ -285,6 +267,7 @@ export default {
       }
       this.webrtc = classOption.webrtcType;
 
+      //
       BJY.init({
         env: options.env,
         privateDomainPrefix: options.prefixName,
