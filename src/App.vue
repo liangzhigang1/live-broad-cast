@@ -244,6 +244,8 @@ export default {
         webrtc: 1,
       };
 
+
+
       if (location.href.includes("teacher=1")) {
         options = Object.assign(options, {
           user_name: "老师",
@@ -253,9 +255,9 @@ export default {
         });
       }
 
-      var url = location.href;
-      options = Object.assign(options, this.urlParser(url));
-      console.log(options);
+      // var url = location.href;
+      // options = Object.assign(options, this.urlParser(url));
+      // console.log(options);
       var classOption = {
         // 必须为字符串
         id: options.room_id,
