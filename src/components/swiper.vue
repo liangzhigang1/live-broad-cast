@@ -2,9 +2,12 @@
   <div style="position: relative;width: 100%" class="swiper-container1">
     <div style="position:relative" class="right-left-base-info-content">
             <swiper ref="mySwipe1r" :options="swiperOptions">
-              <swiper-slide v-for="(item, index) in [1,2,3,4,5,6,7,8]" :key="index">
-                <div style="background: pink;height: 140px;width: 100%">
-                  {{ item }}
+              <swiper-slide v-for="(item, index) in workList" :key="index">
+                <div @click="showWork(item)" style="background: pink;height: 140px;width: 100%">
+                  <span v-if="item.type == 'ppt'">ppt</span>
+                  <span v-if="item.type == 'png'">png</span>
+                  <span v-if="item.type == 'mp3'">mp3</span>
+                  <span v-if="item.type == 'mp4'">mp4</span>
                 </div>
               </swiper-slide>
               
@@ -74,8 +77,20 @@ export default {
           }
         }
       },
+      workList: [
+        {studentName: '张三', type: 'ppt', src: '../assets/img/大数据监控大屏参考.pptx'},
+        {studentName: '李四', type: 'png', src: '../assets/img/8.png'},
+        {studentName: '王五', type: 'mp3', src: '../assets/img/dfh.mp3'},
+        {studentName: '赵六', type: 'mp4', src: '../assets/img/exampleobject.mp4'},
+      ]
     };
   },
+  methods: {
+    showWork (item) {
+      console.log('11111', item);
+      this.$emit('swiperClick', item)
+    }
+  }
 };
 </script>
 <style lang="scss" >

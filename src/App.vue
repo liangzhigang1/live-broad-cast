@@ -4,8 +4,13 @@
     <div v-if="loaded" ref="main" id="main">
       <HorseLamp />
       <div class="class-panel">
-          <TeacherPlayer v-show="!showStartBtn" />
-
+          <!-- <TeacherPlayer v-show="!showStartBtn" /> -->
+          <div v-if="work" class="class-work">
+            <!-- <el-image src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg"></el-image> -->
+            <img v-if="work.type == 'png'" style="width: 100%;height: 100%" src="../src/assets/img/8.png" />
+            <div id="media-player" >
+            </div>
+          </div>
         <div v-if="showStartBtn" class="start-btn" @click="handleClassStart">上课</div>
       </div>
       <div class="kejian">
@@ -24,7 +29,7 @@
         <!-- <DocList v-if="isTeacher" /> -->
       </div>
       <div class="zuoye">
-        <swiper></swiper>
+        <swiper @swiperClick="swiperClick"></swiper>
       </div>
       <div class="footer">
         <SettingPanel />
@@ -82,10 +87,13 @@ export default {
   },
   data() {
     return {
+      mediaPlayer: null,
       loaded: false,
       webrtc: 1,
       isTeacher: false,
       showStartBtn: false,
+      work: null,
+      src: require('../src/assets/img/8.png')
     };
   },
   mounted() {
@@ -242,6 +250,31 @@ export default {
     this.init();
   },
   methods: {
+    open () {
+        if (!this.mediaPlayer) {
+            this.mediaPlayer = BJY.NewMediaPlayer.create({
+                element: $('#media-player1'),
+                volume: 100,
+                // 是否可以拖动，默认为false
+                draggale: true,
+                // 可拖动区域的选择符，默认为Body元素
+                draggableRectSelector: 'body',
+                replace: false,
+                onCloseButtonClick: () => {
+                    this.close()
+                },
+                onMinimizeButtonClick: () => {
+                    this.visible = false;
+                },
+                onPlayFileFail: function () {
+                    alert('打开文件失败');
+                }
+            });
+        }
+    },
+    close () {
+        this.mediaPlayer = null;
+    },
     init() {
       // 默认demo教室-学生端
       var options = {
@@ -256,8 +289,6 @@ export default {
         webrtc: 1,
       };
 
-
-
       if (location.href.includes("teacher=1")) {
         options = Object.assign(options, {
           user_name: "老师",
@@ -266,7 +297,6 @@ export default {
           sign: "53df87fc8d9bcf018269f0c6328a71cf",
         });
       }
-
       // var url = location.href;
       // options = Object.assign(options, this.urlParser(url));
       // console.log(options);
@@ -356,6 +386,12 @@ export default {
     handleClassStart() {
       eventEmitter.trigger(eventEmitter.CLASS_START_TRIGGER);
     },
+    swiperClick (params) {
+      this.work = params
+      this.mediaPlayer ? this.close() : this.open()
+      console.log('111111', this.mediaPlayer);
+      console.log('this.work', this.work);
+    }
   },
 };
 </script>
@@ -385,7 +421,14 @@ export default {
       right: 450px;
       bottom: 180px;
       background-image: url("./assets/img/class-panel-bg.jpg");
-
+      .class-work {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1000;
+      }
       .start-btn {
         position: absolute;
         left: 0;
