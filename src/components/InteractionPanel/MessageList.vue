@@ -1,9 +1,9 @@
 <template>
   <div id="message-panel">
-      <!-- <div class="notice">
-      </div> -->
-    <!-- <div class="message-list">
-    </div> -->
+    <div class="notice">
+    </div>
+    <div class="message-list">
+    </div>
     <div @click="stopSay" class="xx">全体禁言</div>
     <div class="message-sender">
     </div>
