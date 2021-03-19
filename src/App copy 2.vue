@@ -4,18 +4,24 @@
     <div v-if="loaded" ref="main" id="main">
       <HorseLamp />
       <div class="class-panel">
-        <WhiteBorad />
-
+          <!-- <TeacherPlayer v-show="!showStartBtn" /> -->
+          <div v-if="work" class="class-work">
+            <!-- <el-image src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg"></el-image> -->
+            <img v-if="work.type == 'png'" style="width: 100%;height: 100%" src="../src/assets/img/8.png" />
+            <div id="media-player" >
+            </div>
+          </div>
         <div v-if="showStartBtn" class="start-btn" @click="handleClassStart">上课</div>
       </div>
       <div class="kejian">
-        <DocList v-if="isTeacher" />
+        <DocList v-show="isTeacher" />
       </div>
 
       <div class="media-panel">
         <div class="wrap">
           <!-- 老师播放器 -->
-          <TeacherPlayer />
+        <WhiteBorad />
+
           <!-- 互动区 -->
           <InteractionPanel />
         </div>
@@ -23,9 +29,7 @@
         <!-- <DocList v-if="isTeacher" /> -->
       </div>
       <div class="zuoye">
-        <div class="">
-
-        </div>
+        <swiper @swiperClick="swiperClick"></swiper>
       </div>
       <div class="footer">
         <SettingPanel />
@@ -56,9 +60,11 @@ import ModalPanel from "./components/ModalPanel";
 // 跑马灯组件
 import HorseLamp from "./components/HorseLamp";
 // 文档列表
-import DocList from "./components/DocList";
+import DocList from "./components/Doc/DocList";
 // 话术
 import language from "./language/main.js";
+// swiper
+import swiper from './components/swiper'
 
 const eventEmitter = BJY.eventEmitter;
 const auth = BJY.auth;
@@ -77,13 +83,17 @@ export default {
     HorseLamp,
     ModalPanel,
     DocList,
+    swiper
   },
   data() {
     return {
+      mediaPlayer: null,
       loaded: false,
       webrtc: 1,
       isTeacher: false,
       showStartBtn: false,
+      work: null,
+      src: require('../src/assets/img/8.png')
     };
   },
   mounted() {
@@ -138,7 +148,6 @@ export default {
   created() {
     // 绑定事件
     let $body = $("body");
-
     store.watch(
       "class.started",
       (started) => {
@@ -146,7 +155,6 @@ export default {
       },
       true
     );
-
     eventEmitter
       .one(eventEmitter.CLASSROOM_CONNECT_TRIGGER, (event, data) => {
         // 初始化扩展
@@ -163,10 +171,22 @@ export default {
       .on(eventEmitter.LOGIN_CONFLICT, () => {
         alert(language.LOGIN_CONFLICT);
       })
+      .on(
+        eventEmitter.MESSAGE_SEND_FORBID_ALL_CHANGE,
+        function (event, data) {
+            console.log('xxxxxxxxxx', data);
+            if (data.forbidAll) {
+                // 是否全体禁言
+            } else {
+              data.forbidAll = true
+            }
+        }
+    )
       // 监听初始化事件，初始化组件
       // 请将所有的组件创建逻辑写于此回调函数之中
       .one(eventEmitter.VIEW_RENDER_TRIGGER, () => {
         // 注意，在VIEW_RENDER_TRIGGER事件触发后再去加载教室里面的组件
+        store.set("class.xx", true);
         this.loaded = true;
         this.isTeacher = auth.isTeacher();
         eventEmitter.trigger(eventEmitter.DOC_ALL_REQ);
@@ -193,6 +213,7 @@ export default {
         if (auth.isWebRTC()) {
           BJY.ScreenShareExtensionWebrtc.init();
         }
+
       })
       .one(eventEmitter.LOADING_PANEL_END, () => {
         // 进度条加载完成再显示ui
@@ -229,51 +250,55 @@ export default {
     this.init();
   },
   methods: {
+    open () {
+        if (!this.mediaPlayer) {
+            this.mediaPlayer = BJY.NewMediaPlayer.create({
+                element: $('#media-player1'),
+                volume: 100,
+                // 是否可以拖动，默认为false
+                draggale: true,
+                // 可拖动区域的选择符，默认为Body元素
+                draggableRectSelector: 'body',
+                replace: false,
+                onCloseButtonClick: () => {
+                    this.close()
+                },
+                onMinimizeButtonClick: () => {
+                    this.visible = false;
+                },
+                onPlayFileFail: function () {
+                    alert('打开文件失败');
+                }
+            });
+        }
+    },
+    close () {
+        this.mediaPlayer = null;
+    },
     init() {
-      console.log(
-        "******************************************************************************"
-      );
-      console.log("*   欢迎使用 BJY JS SDK - 百家云直播 - " + BJY.version);
-      console.log("*   API 文档：https://www.baijiayun.com/js-sdk/doc/#/README");
-      console.log("*   版本更新日志：https://www.baijiayun.com/js-sdk/doc/#/change-log");
-      console.log(
-        "*   常见问题：https://www.baijiayun.com/js-sdk/doc/#/live?id=%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98"
-      );
-      console.log("*   注意事项：自己创建教室测试时，注意非webrtc类型教室传入webrtc: 0");
-      console.log("*   sign签名规则：https://dev.baijiayun.com/wiki/detail/1");
-      console.log(
-        "******************************************************************************"
-      );
       // 默认demo教室-学生端
       var options = {
-        prefixName: "tiansujing",
-        env: "production",
-        room_id: "19112041735674",
-        user_number: "0",
-        user_avatar: "//img.baijiayun.com/0bjcloud/live/avatar/v2/teacher.png",
-        user_name: "游客",
+        prefixName: "e83228320",
+        // env: "production",
+        room_id: "21031850330453",
+        user_number: "31",
+        user_avatar: "https%3A%2F%2Falioss.shejizhizi.com%2Fwkapi%2Fdefault.jpg",
+        user_name: "mobile_64aff661cfd",
         user_role: 0,
-        sign: "731f5299af5179f99a17746f7c1bd20e",
+        sign: "9d4acc9037e55d8bd22d12c98c604a6a",
         webrtc: 1,
       };
 
       if (location.href.includes("teacher=1")) {
         options = Object.assign(options, {
-          user_name: "老师",
+          user_name: "mobile_b15a9cc5176",
           user_role: 1,
-          user_number: "1",
-          sign: "53df87fc8d9bcf018269f0c6328a71cf",
+          user_number: "24",
+          user_avatar: "https%3A%2F%2Fwkapi.shejizhizi.com%2Fstatic%2Favatar%2Fdefault.jpg",
+          sign: "a4397c64fb6c2e13562578b793c35e96",
         });
       }
-
-      // debug 模式支持输入传送门链接进入
-      // 非webrtc大班课需要在url后拼上 &webrtc=0
-      if (location.href.includes("debug=1")) {
-        var url = prompt("输入教室链接进入教室");
-        options = Object.assign(options, this.urlParser(url));
-        console.log(options);
-      }
-
+      console.log('options', options);
       var classOption = {
         // 必须为字符串
         id: options.room_id,
@@ -285,9 +310,11 @@ export default {
       }
       this.webrtc = classOption.webrtcType;
 
+      //
       BJY.init({
-        env: options.env,
+        // env: options.env,
         privateDomainPrefix: options.prefixName,
+        // privateDomainPrefix: 'e83228320',
         class: classOption,
         user: {
           number: options.user_number,
@@ -358,6 +385,12 @@ export default {
     handleClassStart() {
       eventEmitter.trigger(eventEmitter.CLASS_START_TRIGGER);
     },
+    swiperClick (params) {
+      this.work = params
+      this.mediaPlayer ? this.close() : this.open()
+      console.log('111111', this.mediaPlayer);
+      console.log('this.work', this.work);
+    }
   },
 };
 </script>
@@ -383,10 +416,18 @@ export default {
       position: absolute;
       top: 0;
       left: 0;
+      padding: 0 15px;
       right: 450px;
       bottom: 180px;
       background-image: url("./assets/img/class-panel-bg.jpg");
-
+      .class-work {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1000;
+      }
       .start-btn {
         position: absolute;
         left: 0;
@@ -394,12 +435,12 @@ export default {
         bottom: 0;
         right: 0;
         margin: auto;
-        background: #1795ff;
+        background: blue;
         border-radius: 5px;
         width: 100px;
         height: 50px;
         line-height: 50px;
-        color: #fff;
+        color: red;
         text-align: center;
         font-size: 22px;
         cursor: pointer;
@@ -455,13 +496,14 @@ export default {
     .zuoye {
       position: absolute;
       left: 0;
+      // width: 100%;
       right: 290px;
       bottom: 40px;
-      height: 100px;
-      display: flex;
-      justify-content: space-between;
-      padding: 0 15px;
-      align-items: center;
+      height: 140px;
+      // display: flex;
+      // justify-content: space-between;
+      // padding: 0 15px;
+      // align-items: center;
       font-size: 15px;
       color: #bdc6cf;
       z-index: 0;

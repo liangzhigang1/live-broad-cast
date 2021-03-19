@@ -20,7 +20,6 @@ export default {
   methods: {
     // 生成浮层
     setLayer(useParameterUser, e) {
-      console.log('11111');
       let ele = $(".bjy-user-layer");
       if (!this.userLayerInstance || (this.userLayerInstance && !ele[0])) {
         if (this.userLayerInstance && !ele[0]) {
@@ -107,7 +106,6 @@ export default {
   mounted() {
     let eventEmitter = BJY.eventEmitter;
     let me = this;
-
     BJY.UserList.create({
       element: $("#user-list"),
       renderUser: function (user, width, height) {

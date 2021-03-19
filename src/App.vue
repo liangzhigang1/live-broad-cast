@@ -1,46 +1,86 @@
 <template>
   <div id="app">
-    <Loading />
-    <div v-if="loaded" ref="main" id="main">
-      <HorseLamp />
-      <div class="class-panel">
-          <!-- <TeacherPlayer v-show="!showStartBtn" /> -->
-          <div v-if="work" class="class-work">
-            <!-- <el-image src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg"></el-image> -->
-            <img v-if="work.type == 'png'" style="width: 100%;height: 100%" src="../src/assets/img/8.png" />
-            <div id="media-player" >
+    <!-- <Loading /> -->
+    <div ref="main" id="main">
+      <div class="wrap">
+        <div class="left">
+          <div class="main">
+            <TeacherPlayer v-show="!showStartBtn" />
+            <img v-if="showStartBtn" src="../src/assets/img/8.png" alt="">
+            <div class="start">
+              <el-button @click="handleClassStart" style="width: 140px;height: 30px" type="primary" v-if="showStartBtn" icon="el-icon-video-play">上课</el-button>
             </div>
           </div>
-        <div v-if="showStartBtn" class="start-btn" @click="handleClassStart">上课</div>
-      </div>
-      <div class="kejian">
-        <DocList v-show="isTeacher" />
-      </div>
+          <!-- 文档列表 -->
+          <div class="doc-manage"> 
+            <div @click="showKejian = !showKejian" style="text-align: center;color: #999999;" class="doc-manage-icon">
+              <div>
+                <span v-if="showKejian" style="font-size: 10px" class="iconfont">&#xeca5;</span>
+                <span v-if="!showKejian" style="font-size: 10px" class="iconfont">&#xeca6;</span>
+              </div>
+              <div>我</div>
+              <div>的</div>
+              <div>课</div>
+              <div>件</div>
+            </div>
+            <div v-show="showKejian" class="doc-manage-main">
+              <div class="title">
+                课件
+              </div>
+              <div style="text-align: center">
+                <div class="img-main">
+                  
+                </div>
+                <div class="img-title">
+                  文件名加后三个...jpg
+                </div>
+                <div class="img-main">
 
-      <div class="media-panel">
-        <div class="wrap">
-          <!-- 老师播放器 -->
-        <WhiteBorad />
+                </div>
+                <div class="img-title">
+                  文件名加后十三个...jpg
+                </div>
+                <div class="img-main">
 
-          <!-- 互动区 -->
-          <InteractionPanel />
+                </div>
+                <div class="img-title">
+                  文件名加后三个...jpg
+                </div>
+              </div>
+              <div class="doc-manage-upload">
+                <el-button style="width: 140px;height: 30px" type="primary" icon="el-icon-folder-opened">课件上传</el-button>
+              </div>          
+            </div>
+          </div>
+          <div style="display:flex" class="footer">
+            <div style="flex: 0 0 0px">
+              <SettingPanel />
+            </div>
+            <div style="flex: 1">
+              <FunctionPanel />
+            </div>
+            
+          </div>
         </div>
-        <!-- 文档列表 -->
-        <!-- <DocList v-if="isTeacher" /> -->
+        <div class="right">
+          <div v-if="huDong" :style="{ marginLeft: showKejian ? '3px' : ''}"  class="hu-dong">
+            <div @click="showHuDong" class="shousuo">
+                <span style="color: #999999;font-size: 20px" class="iconfont">&#xeca5;</span>
+            </div>
+            <div style="width: 240px;height: 200px;border: 1px solid #474F5D;background: #fff;margin: 0px 10px">
+            </div>
+            <!-- 互动区 -->
+            <InteractionPanel />
+          </div>
+        </div>
+        <div v-if="!huDong" @click="showHuDong" class="shousuo1">
+            <span style="color: #999999;font-size: 20px" class="iconfont">&#xeca6;</span>
+        </div>
       </div>
-      <div class="zuoye">
-        <swiper @swiperClick="swiperClick"></swiper>
-      </div>
-      <div class="footer">
-        <SettingPanel />
-        <FunctionPanel />
-      </div>
-
-      <!-- 模态框组件 -->
-      <ModalPanel />
     </div>
   </div>
 </template>
+
 
 <script>
 // loading组件，进教室之前的准备工作
@@ -93,7 +133,9 @@ export default {
       isTeacher: false,
       showStartBtn: false,
       work: null,
-      src: require('../src/assets/img/8.png')
+      src: require('../src/assets/img/8.png'),
+      huDong: true,
+      showKejian: true,
     };
   },
   mounted() {
@@ -250,6 +292,10 @@ export default {
     this.init();
   },
   methods: {
+    showHuDong () {
+      console.log('11111112432432')
+      this.huDong = !this.huDong
+    },
     open () {
         if (!this.mediaPlayer) {
             this.mediaPlayer = BJY.NewMediaPlayer.create({
@@ -278,28 +324,27 @@ export default {
     init() {
       // 默认demo教室-学生端
       var options = {
-        prefixName: "tiansujing",
-        env: "production",
-        room_id: "19112041735674",
-        user_number: "0",
-        user_avatar: "//img.baijiayun.com/0bjcloud/live/avatar/v2/teacher.png",
-        user_name: "游客",
+        prefixName: "e83228320",
+        // env: "production",
+        room_id: "21031850330453",
+        user_number: "31",
+        user_avatar: "https%3A%2F%2Falioss.shejizhizi.com%2Fwkapi%2Fdefault.jpg",
+        user_name: "mobile_64aff661cfd",
         user_role: 0,
-        sign: "731f5299af5179f99a17746f7c1bd20e",
+        sign: "9d4acc9037e55d8bd22d12c98c604a6a",
         webrtc: 1,
       };
 
       if (location.href.includes("teacher=1")) {
         options = Object.assign(options, {
-          user_name: "老师",
+          user_name: "mobile_b15a9cc5176",
           user_role: 1,
-          user_number: "1",
-          sign: "53df87fc8d9bcf018269f0c6328a71cf",
+          user_number: "24",
+          user_avatar: "https%3A%2F%2Fwkapi.shejizhizi.com%2Fstatic%2Favatar%2Fdefault.jpg",
+          sign: "a4397c64fb6c2e13562578b793c35e96",
         });
       }
-      // var url = location.href;
-      // options = Object.assign(options, this.urlParser(url));
-      // console.log(options);
+      console.log('options', options);
       var classOption = {
         // 必须为字符串
         id: options.room_id,
@@ -313,7 +358,7 @@ export default {
 
       //
       BJY.init({
-        env: options.env,
+        // env: options.env,
         privateDomainPrefix: options.prefixName,
         // privateDomainPrefix: 'e83228320',
         class: classOption,
@@ -396,6 +441,8 @@ export default {
 };
 </script>
 
+
+
 <style lang="scss">
 @import "./assets/iconfont/iconfont.css";
 
@@ -405,120 +452,64 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
   width: 100%;
-
-  #main {
-    position: absolute;
-    top: 0;
+    /* 清除浏览器默认边距 */
+  * {
+      margin: 0;
+      padding: 0;
+  }
+   #main {
     width: 100%;
     height: 100%;
-    opacity: 0;
-
-    .class-panel {
-      position: absolute;
-      top: 0;
-      left: 0;
-      padding: 0 15px;
-      right: 450px;
-      bottom: 180px;
-      background-image: url("./assets/img/class-panel-bg.jpg");
-      .class-work {
+   }
+  .wrap {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      background: #11131A;
+      .shousuo1 {
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 1000;
-      }
-      .start-btn {
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        margin: auto;
-        background: blue;
-        border-radius: 5px;
-        width: 100px;
-        height: 50px;
-        line-height: 50px;
-        color: red;
-        text-align: center;
-        font-size: 22px;
+        top: 50%;
+        right: -10px;
+        transform: translate(-50%, -50%);
+        width: 30px;
+        height: 74px;
+        line-height: 74px;
+        background: #000000;
+        opacity: 0.3;
+        border-radius: 4px;
         cursor: pointer;
+        text-align: center;
       }
-
-      .bjy-popup {
-        display: none;
-      }
-    }
-    .kejian {
-      position: absolute;
-      width: 150px;
-      top: 0;
-      right: 300px;
-      bottom: 180px;
-      padding: 8px 12px;
-      box-sizing: border-box;
-      background: #fff;
-      z-index: 1;
-    }
-    .media-panel {
-      position: absolute;
-      width: 290px;
-      top: 0;
-      right: 0;
-      bottom: 0px;
-      padding: 8px 12px;
-      box-sizing: border-box;
-      background: #fff;
-      box-shadow: -2px 0 6px rgba(0, 0, 0, 0.1);
-      z-index: 1;
-
-      .live-teacher-player {
-        background: #000;
-        height: 200px;
-        width: 100%;
-      }
-
-      .wrap {
+  }
+  .left {
+    height: 100%;
+    flex: 1;
+    background: #11131a;
+    position: relative;
+    .main {
+      height: calc(100% - 140px);
+      width: 100%;
+      padding: 2% 10%;
+      position: relative;
+      .start {
         position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        left: 0;
-        background: #fff;
-        // padding: 10px 10px 0 10px;
-
-        #live-teacher-player {
-          height: 200px;
-        }
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
       }
-    }
-    .zuoye {
-      position: absolute;
-      left: 0;
-      // width: 100%;
-      right: 290px;
-      bottom: 40px;
-      height: 140px;
-      // display: flex;
-      // justify-content: space-between;
-      // padding: 0 15px;
-      // align-items: center;
-      font-size: 15px;
-      color: #bdc6cf;
-      z-index: 0;
-      .item {
-
+      img {
+        width:100%;
+        height:100%;
+        display:block;
       }
     }
     .footer {
       position: absolute;
       left: 0;
-      right: 290px;
+      right: 0;
       bottom: 0;
       height: 40px;
-      background-color: #424242;
+      background-color: #313847;
       display: flex;
       justify-content: space-between;
       padding: 0 15px;
@@ -527,6 +518,85 @@ export default {
       color: #bdc6cf;
       z-index: 0;
     }
+    .doc-manage {
+      height: calc(100% - 40px);  
+      position: absolute;
+      right: 0%;
+      top: 0%;
+      // z-index: 100;
+      display: flex;
+      .doc-manage-icon {
+        margin-top: 100px;
+        flex:0 0 21px;
+        width: 21px;
+        height: 96px;
+        background: #2D3342;
+        border-radius: 4px 0px 0px 4px;
+        cursor: pointer;
+      }
+      .doc-manage-main {
+        flex: 1;
+        position: relative;
+        background: #313847;
+        width: 160px;
+        // height: 100%;
+        padding-bottom: 100px;
+        .title {
+          padding: 10px 5px;
+          color: #fff;
+          font-size: 15px
+        }
+        .img-main {
+          width: 150px;
+          height: 94px;
+          border: 1px solid #04AEFF;
+          margin: 0 auto;
+          background: #7F8B9D
+        }
+        .img-title {
+          width: 167px;
+          height: 23px;
+          font-size: 12px;
+          font-family: Source Han Sans CN;
+          font-weight: 400;
+          color: #04AEFF;
+        }
+        .doc-manage-upload {
+          position: absolute;
+          left: 6%;
+          bottom: 20px;
+          width: 178px;
+          height: 38px;
+        }
+      }
+    }
+  }
+  .right {
+    position: relative;
+    height: 100%;
+    flex:0 0 0px;
+    display: flex;
+    .hu-dong {
+      width: 260px;
+      height: 100%;
+      background: #313847;
+      position: relative;
+      flex: 1;
+      .shousuo {
+        position: absolute;
+        top: 50%;
+        left: 7%;
+        transform: translate(-50%, -50%);
+        width: 30px;
+        height: 74px;
+        line-height: 74px;
+        background: #000000;
+        opacity: 0.3;
+        border-radius: 4px;
+        cursor: pointer;
+        text-align: center;
+      }
+    }  
   }
 }
 </style>
