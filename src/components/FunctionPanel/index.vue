@@ -2,40 +2,70 @@
   <div class="function-panel">
     <div class="left">
       <div class="bjy-spacer"></div>
-      <!-- 上下课 -->
-      <div v-if="!isStudent" @click="toggleClassStart">
-        {{ statusTip }}
+      <div v-if="!isStudent" @click="toggleMediaPlayer">
+        <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe60a;</span>
+        播放
       </div>
 
       <!-- 录制按钮 -->
-      <Record class="bjy-custom-record" v-if="!isStudent" />
-
-      <div v-if="!isStudent" @click="toggleQuiz">测验</div>
-
-      <div v-if="!isStudent" @click="toggleAnswer">答题器</div>
-
-      <div v-if="!isStudent" @click="toggleMediaPlayer">播放</div>
-
-      <div v-if="!isStudent" @click="toggleRollCall">点名</div>
-
-      <div v-if="!isStudent" @click="toggleLottery">抽奖</div>
-
-      <div v-if="!isStudent" @click="toggleAttentionDetection">专注度检测</div>
-    </div>
-
-    <div class="right">
-      <!-- 举手菜单 -->
-      <div v-if="isStudent" class="btn-wrap">
-        <SpeakApplyMenu />
+      <div class="btn-wrap">
+        <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe6b0;</span>
+        <Record class="bjy-custom-record" v-if="!isStudent" />
       </div>
+      
 
       <!-- 屏幕分享菜单 -->
       <div class="btn-wrap">
+        <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe675;</span>
         <ShareScreenMenu />
       </div>
 
+
+      <div v-if="!isStudent" @click="toggleQuiz">
+        <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe62d;</span>
+        发布作业
+      </div>
+
+      <div v-if="!isStudent" @click="toggleAnswer">
+        <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe603;</span>
+        举手
+      </div>
+
+      
+
+      <div v-if="!isStudent" @click="toggleRollCall">
+        <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe61e;</span>
+        评价
+      </div>
+
+      <div v-if="!isStudent" @click="toggleLottery">
+        <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe609;</span>
+        更多
+      </div>
+
+      <!-- <div v-if="!isStudent" @click="toggleAttentionDetection">
+        <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe675;</span>
+        专注度检测
+      </div> -->
+    </div>
+
+    <div class="right">
+      <!-- 上下课 -->
+      <div v-if="!isStudent" @click="toggleClassStart">
+        <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe609;</span>
+        {{ statusTip }}
+      </div>
+      <!-- 举手菜单 -->
+      <div v-if="isStudent" class="btn-wrap">
+        <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe603;</span>
+        <SpeakApplyMenu />
+      </div>
+
+      
+
       <!-- 弹幕按钮 -->
       <div @click="toggleBarrage()" class="btn-wrap">
+        <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe603;</span>
         <i v-if="isBarrageOn" class="icon icon-barrage-on"></i>
         <i v-else class="icon icon-barrage-off"></i>
         {{ barrageState }}
@@ -196,20 +226,22 @@ export default {
   .left,
   .right {
     display: flex;
-
     & > * {
       margin: 0 4px;
       padding: 2px 12px;
       cursor: pointer;
       display: flex;
       align-items: center;
-
-      &:hover {
-        border-radius: 4px;
-        background-color: rgba(255, 255, 255, 0.3);
-        color: #fff;
-        transition: all 0.3s;
-      }
+      background: #424D5C;
+      border-radius: 2px;
+      height: 30px;
+      border: 2px solid #485260;
+      // &:hover {
+      //   border-radius: 4px;
+      //   background-color: rgba(255, 255, 255, 0.3);
+      //   color: #fff;
+      //   transition: all 0.3s;
+      // }
     }
 
     .bjy-custom-record {
@@ -218,7 +250,6 @@ export default {
 
       .bjy-menu-switcher {
         padding: 0;
-
         .bjy-label {
           margin-left: 0;
           vertical-align: unset;
@@ -238,7 +269,12 @@ export default {
   }
 
   .bjy-spacer {
-    margin-right: 200px;
+    margin-right: 100px;
+    background: none;
+    border: 0px;
+  }
+  .bjy-record .bjy-menu-switcher {
+    color: #fff !important;
   }
 }
 </style>

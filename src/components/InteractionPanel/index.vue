@@ -46,9 +46,9 @@
           <ActiveList />
         </div>
         <!-- 问答 -->
-        <div class="question-answer fold">
+        <!-- <div class="question-answer fold">
           <QuestionAnswer />
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

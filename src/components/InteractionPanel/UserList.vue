@@ -199,4 +199,8 @@ export default {
 .bjy-user-layer {
   position: fixed;
 }
+.bjy-user-item {
+  background: none !important;
+  color: #fff !important;
+}
 </style>

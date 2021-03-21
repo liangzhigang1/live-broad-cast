@@ -7,12 +7,12 @@ import { MessageBox, Message } from 'element-ui'
 
 
 // const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
-const baseUrl = 'https://tiansujing.at.baijiayun.com'
+const baseUrl = 'https://e83228320.at.baijiayun.com'
 /**
  * HTTP请求对象
  */
 const flyRequest = new FlyRequest({
-  baseURL: 'https://tiansujing.at.baijiayun.com'
+  baseURL: 'https://e83228320.at.baijiayun.com'
 })
 
 /**

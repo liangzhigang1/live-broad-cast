@@ -4,10 +4,18 @@
             <swiper ref="mySwipe1r" :options="swiperOptions">
               <swiper-slide v-for="(item, index) in workList" :key="index">
                 <div @click="showWork(item)" style="background: pink;height: 140px;width: 100%">
-                  <span v-if="item.type == 'ppt'">ppt</span>
-                  <span v-if="item.type == 'png'">png</span>
-                  <span v-if="item.type == 'mp3'">mp3</span>
-                  <span v-if="item.type == 'mp4'">mp4</span>
+                  <span v-if="item.type == 'ppt'">
+                    <img style="width: 100%;height: 100%" src="../assets/img/8.png" />
+                  </span>
+                  <span v-if="item.type == 'png'">
+                    <img style="width: 100%;height: 100%" src="../assets/img/8.png" />
+                  </span>
+                  <span v-if="item.type == 'mp3'">
+                    <img style="width: 100%;height: 100%" src="../assets/img/8.png" />
+                  </span>
+                  <span v-if="item.type == 'mp4'">
+                    <img style="width: 100%;height: 100%" src="../assets/img/8.png" />
+                  </span>
                 </div>
               </swiper-slide>
               
@@ -82,6 +90,11 @@ export default {
         {studentName: '李四', type: 'png', src: '../assets/img/8.png'},
         {studentName: '王五', type: 'mp3', src: '../assets/img/dfh.mp3'},
         {studentName: '赵六', type: 'mp4', src: '../assets/img/exampleobject.mp4'},
+        {studentName: '赵六', type: 'mp4', src: '../assets/img/exampleobject.mp4'},
+        {studentName: '赵六', type: 'mp4', src: '../assets/img/exampleobject.mp4'},
+        {studentName: '赵六', type: 'mp4', src: '../assets/img/exampleobject.mp4'},
+        {studentName: '赵六', type: 'mp4', src: '../assets/img/exampleobject.mp4'},
+        {studentName: '赵六', type: 'mp4', src: '../assets/img/exampleobject.mp4'},
       ]
     };
   },
@@ -94,5 +107,32 @@ export default {
 };
 </script>
 <style lang="scss" >
-
+.swiper-button-prev {
+  padding: 72px 5px;
+  top: 16% !important;
+  left: 0 !important;
+  width: 50px !important;
+  background: #000000;
+  opacity: 0.5 !important;
+}
+.swiper-button-prev:after {
+  font-size: 20px !important;
+  color: #fff;
+  // opacity: 1;
+  font-weight: bold;
+}
+.swiper-button-next {
+  padding: 72px 5px;
+  top: 16% !important;
+  right: 0 !important;
+  width: 50px !important;
+  background: #000000;
+  opacity: 0.5;
+}
+.swiper-button-next:after {
+  font-size: 20px !important;
+  color: #fff;
+  // opacity: 1;
+  font-weight: bold;
+}
 </style>

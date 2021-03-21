@@ -1,11 +1,13 @@
 <!-- 跑马灯组件，此组件不需要预置dom，只需在创建的时候指定挂载dom（即要在哪个dom里面跑） -->
 <template>
-  <div :style="{width: show ? '160px' : '0px'}" class="bjy-sidebar" :class="{ 'bjy-active': show }">
-    <div @click="show = !show" class="bjy-toggle-btn">文档列表</div>
-    <div class="bjy-doc-list"></div>
-    <div class="upload-doc">
-      <el-button type="primary" icon="el-icon-folder-opened" @click="showKeJian">课件上传</el-button>
+  <div class="bjy-sidebar" :class="{ 'bjy-active': show }">
+    <div style="margin-bottom: 50px;text-align: center">
+      <el-button type="primary" @click="showKeJian">课件上传</el-button>
     </div>
+    <div @click="show = !show" class="bjy-toggle-btn">文档列表</div>
+      <div id="catalogue">
+        <div class="placeholder"></div>
+      </div>
     <doc-manage ref="docManage"></doc-manage>
   </div>
 </template>
@@ -37,28 +39,28 @@ export default {
   },
   mounted() {
     BJY.Catalogue.create({
-      element: $(".bjy-doc-list"),
+      element: $("#catalogue .placeholder"),
       thumbnailWidth: 100,
       // hasWhiteboard: true,
     });
-    console.log('BJY.Catalogue', BJY.Catalogue);
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .bjy-sidebar {
+  // position: relative;
   position: absolute;
-  top: 0;
+  top: 50px;
   bottom: 0;
-  z-index: 1;
+  z-index: -1;
   left: 0;
-  // width: 160px;
+  width: 160px;
   background: #fff;
   // box-shadow: 5px -5px 5px 5px #aaa;
-  
+
   &.bjy-active {
-    left: -160px;
+    // left: -160px;
   }
 
   .bjy-toggle-btn {
@@ -71,21 +73,10 @@ export default {
     line-height: 20px;
     padding: 10px 0;
     text-align: center;
-    background: #2D3342;
-    color: #fff;
-    // z-index: 99999 !important;
-    // border: 1px solid #4a4a4a;
+    background: #fff;
+    color: #4a4a4a;
+    border: 1px solid #4a4a4a;
     cursor: pointer;
-  }
-  .upload-doc {
-    position: absolute;
-    left: 16px;
-    bottom: 20px;
-    text-align: center;
-    color: #fff;
-    .el-button {
-      padding: 9px 24px !important;
-    }
   }
 }
 </style>

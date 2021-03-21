@@ -1,10 +1,14 @@
 <template>
   <div id="message-panel">
-    <div class="notice">
-    </div>
+    <!-- <div class="notice">
+    </div> -->
     <div class="message-list">
     </div>
-    <div @click="stopSay" class="xx">全体禁言</div>
+    <div class="xx">
+      <el-switch @change="changeSwitch" v-model="value1" inactive-text="全体禁言" >
+</el-switch> 
+      
+    </div>
     <div class="message-sender">
     </div>
   </div>
@@ -19,10 +23,21 @@ const eventEmitter = BJY.eventEmitter;
 export default {
   data () {
     return {
+      value1: false,
       stop: false,
     }
   },
   methods: {
+    changeSwitch () {
+      var _this = this
+      console.log('value1', this.value1);
+      eventEmitter.trigger(eventEmitter.MESSAGE_SEND_FORBID_ALL_CHANGE_TRIGGER, {
+        value: _this.value1,
+      });
+      eventEmitter.trigger(eventEmitter.SPEAK_APPLY_FORBID_ALL_CHANGE_TRIGGER, {
+        value: _this.value1,
+      });
+    },
     stopSay () {
       var _this = this
       this.stop = !this.stop
@@ -50,16 +65,16 @@ export default {
   },
   mounted () {
     // 公告
-    BJY.Notice.create({
-      element: $('#message-panel .notice'), // 父容器
-      replace: false,
-      defaultContent: '这里空空如也...', // 默认无公告时显示文本
-      maxLength: 140, // 公告文本最大长度
-      contentPlaceholder: '请输入公告正文内容', // 公告文本编辑框提示
-      linkPlaceholder: '请输入公告跳转链接（可选）', // 公告链接编辑框提示
-      linkErrorHint: 'URL 格式错误', // url 错误提示
-      canEdit: auth.isTeacher() || auth.isAssistant()
-    })
+    // BJY.Notice.create({
+    //   element: $('#message-panel .notice'), // 父容器
+    //   replace: false,
+    //   defaultContent: '这里空空如也...', // 默认无公告时显示文本
+    //   maxLength: 140, // 公告文本最大长度
+    //   contentPlaceholder: '请输入公告正文内容', // 公告文本编辑框提示
+    //   linkPlaceholder: '请输入公告跳转链接（可选）', // 公告链接编辑框提示
+    //   linkErrorHint: 'URL 格式错误', // url 错误提示
+    //   canEdit: auth.isTeacher() || auth.isAssistant()
+    // })
     // 创建消息列表组件
     BJY.MessageList.create({
       element: $('#message-panel .message-list'),
@@ -139,14 +154,14 @@ export default {
   width: 100%;
   height: 100%;
 
-  .notice {
-    position: absolute;
-    top: 0;
-    z-index: 1;
-    background: #fff;
-    width: 100%;
-    border-top: 1px solid #ddd;
-  }
+  // .notice {
+  //   position: absolute;
+  //   top: 0;
+  //   z-index: 1;
+  //   background: #fff;
+  //   width: 100%;
+  //   border-top: 1px solid #ddd;
+  // }
 
   .bjy-message-list {
     bottom: 130px;
@@ -155,7 +170,7 @@ export default {
   }
   .xx {
     position: absolute;
-    bottom: 120px;
+    bottom: 132px;
     right: 10px;
     z-index: 100000;
   }
@@ -164,6 +179,35 @@ export default {
     position: absolute;
     bottom: 10px;
     width: 100%;
+  }
+  .el-switch__label {
+    color: #fff;
+  }
+  .bjy-send-emoji {
+    background: none;
+    color: #FFCA36;
+    border: 0px;
+  }
+  .bjy-send-image {
+    background: none;
+    // color: #FFCA36;
+    border: 0px;
+  }
+  .bjy-message-list {
+    background: #262C38 !important;
+    bottom: 163px;
+    top: 0px;
+  }
+  .bjy-input {
+    color: #fff;
+    border: 1px solid #6E7583;
+    border-radius: 4px;
+  }
+  .message-sender {
+    padding: 10px;
+    background: #313847;
+    border: 1px solid #474F5D;
+    border-radius: 4px;
   }
 }
 </style>

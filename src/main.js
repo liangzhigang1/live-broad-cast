@@ -17,6 +17,10 @@ Vue.use(ElementUI)
 Vue.use(Dialog)
 Vue.use(Toast)
 
+import md5 from 'js-md5';
+Vue.prototype.$md5 = md5;
+
+
 Vue.config.productionTip = false
 
 new Vue({

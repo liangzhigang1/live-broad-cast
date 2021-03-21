@@ -3,39 +3,60 @@
     <Loading />
     <div v-if="loaded" ref="main" id="main">
       <HorseLamp />
-      <div class="class-panel">
-          <!-- <TeacherPlayer v-show="!showStartBtn" /> -->
+      <div class="container">
+        <div :style="{backgroundImage: showStartBtn ? 'url(' + src + ')' : '', right: hudong ? '290px' : '0px', bottom: zuoye ? '220px' : '80px'}" class="class-panel">
+          <TeacherPlayer v-show="!showStartBtn" />
           <div v-if="work" class="class-work">
-            <!-- <el-image src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg"></el-image> -->
             <img v-if="work.type == 'png'" style="width: 100%;height: 100%" src="../src/assets/img/8.png" />
             <div id="media-player" >
             </div>
           </div>
-        <div v-if="showStartBtn" class="start-btn" @click="handleClassStart">上课</div>
+        <div v-show="showStartBtn" class="start-btn" @click="handleClassStart">
+          <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe675;</span>
+          上课
+        </div>
       </div>
-      <div class="kejian">
+
+        <div :style="{right: hudong ? '290px' : '0px', height: zuoye ? '180px' : '40px'}" class="zuoye">
+          <div class="title">
+            作业展示：共66份
+            <span @click="showWork" style="margin-left: 5px" v-show="!zuoye" class="icon iconfont">&#xe61c;</span>
+            <span @click="showWork" style="margin-left: 5px" v-show="zuoye" class="icon iconfont">&#xe67a;</span>
+          </div>
+          <swiper v-show="zuoye" @swiperClick="swiperClick"></swiper>
+        </div>
+        <div :style="{right: hudong ? '290px' : '0px'}" class="footer">
+          <SettingPanel />
+          <FunctionPanel />
+        </div>
+
+      </div>
+
+      <div v-show="hudong" class="media-panel-main">
+        <div class="media-panel">
+          <div class="wrap">
+            <!-- 老师播放器 -->
+            <WhiteBorad />
+
+            <!-- 互动区 -->
+            <InteractionPanel />
+          </div>
+          <div @click="showHuDong" class="wrap-hide">
+              <span style="color: #fff;font-size: 20px;text-align: center;" class="icon iconfont">&#xeca5;</span>
+          </div>
+        </div>
+      </div>
+
+      <div :style="{right: hudong ? '290px' : '0px'}" class="kejian">
         <DocList v-show="isTeacher" />
       </div>
+   
+    
 
-      <div class="media-panel">
-        <div class="wrap">
-          <!-- 老师播放器 -->
-        <WhiteBorad />
-
-          <!-- 互动区 -->
-          <InteractionPanel />
-        </div>
-        <!-- 文档列表 -->
-        <!-- <DocList v-if="isTeacher" /> -->
-      </div>
-      <div class="zuoye">
-        <swiper @swiperClick="swiperClick"></swiper>
-      </div>
-      <div class="footer">
-        <SettingPanel />
-        <FunctionPanel />
-      </div>
-
+      
+          <div v-show="!hudong" @click="showHuDong" class="wrap-hide1">
+              <span style="color: #fff;font-size: 20px;text-align: center;" class="icon iconfont">&#xeca6;</span>
+          </div>
       <!-- 模态框组件 -->
       <ModalPanel />
     </div>
@@ -85,8 +106,11 @@ export default {
     DocList,
     swiper
   },
+  
   data() {
     return {
+      zuoye: true,
+      hudong: true,
       mediaPlayer: null,
       loaded: false,
       webrtc: 1,
@@ -238,6 +262,9 @@ export default {
       .on(eventEmitter.CLASSROOM_CONNECT_SUCCESS, (event, data) => {
         // data.reconnect 是否为断线重连
       })
+      .on(eventEmitter.DOC_FIT_CHANGE, () => {
+        console.log('1111111111111', 22222222222222);
+      })
       // 踢出教室
       .on(eventEmitter.COMMAND_RECEIVE, (event, data) => {
         if (data.command && data.command.command_type === 'logout' && data.toId === store.get('user.id')) {
@@ -250,6 +277,12 @@ export default {
     this.init();
   },
   methods: {
+    showHuDong () {
+      this.hudong = !this.hudong
+    },
+    showWork () {
+      this.zuoye = !this.zuoye
+    },
     open () {
         if (!this.mediaPlayer) {
             this.mediaPlayer = BJY.NewMediaPlayer.create({
@@ -278,25 +311,46 @@ export default {
     init() {
       // 默认demo教室-学生端
       var options = {
-        prefixName: "tiansujing",
+        prefixName: "e83228320",
         env: "production",
-        room_id: "19112041735674",
-        user_number: "0",
-        user_avatar: "//img.baijiayun.com/0bjcloud/live/avatar/v2/teacher.png",
-        user_name: "游客",
+        room_id: "21032159047031",
+        user_number: "31",
+        user_avatar: "https%3A%2F%2Falioss.shejizhizi.com%2Fwkapi%2Fdefault.jpg",
+        user_name: "mobile_64aff661cfd",
         user_role: 0,
-        sign: "731f5299af5179f99a17746f7c1bd20e",
+        sign: "51061dedc19171f33d3d67e91c6abc15",
         webrtc: 1,
       };
 
       if (location.href.includes("teacher=1")) {
         options = Object.assign(options, {
-          user_name: "老师",
+          user_name: "mobile_b15a9cc5176",
           user_role: 1,
-          user_number: "1",
-          sign: "53df87fc8d9bcf018269f0c6328a71cf",
+          user_avatar: "https%3A%2F%2Fwkapi.shejizhizi.com%2Fstatic%2Favatar%2Fdefault.jpg",
+          user_number: "24",
+          sign: "0614cafba2bd4a2e45bb21b7b3c21539",
         });
       }
+      console.log('options:', options);
+
+
+// url: "https://e83228320.at.baijiayun.com/web/room/enter?
+// room_id=21032159047031&
+// user_number=31&
+// user_role=0&
+// user_name=mobile_64aff661cfd&
+// user_avatar=https%3A%2F%2Falioss.shejizhizi.com%2Fwkapi%2Fdefault.jpg&
+// sign=51061dedc19171f33d3d67e91c6abc15"
+
+
+      // url: "https://e83228320.at.baijiayun.com/web/room/enter?
+      // room_id=21032159047031&
+      // user_number=24&
+      // user_role=1&
+      // user_name=mobile_b15a9cc5176&
+      // user_avatar=&
+      // sign=0614cafba2bd4a2e45bb21b7b3c21539"
+
       // var url = location.href;
       // options = Object.assign(options, this.urlParser(url));
       // console.log(options);
@@ -407,43 +461,55 @@ export default {
   width: 100%;
 
   #main {
+    display: flex;
     position: absolute;
     top: 0;
     width: 100%;
     height: 100%;
     opacity: 0;
-
+    background: #11131A;
+    .container {
+      flex: 1;
+      height: 100%;
+    }
+    .media-panel-main {
+      flex: 0 0 0px;
+      height: 100%;
+    }
     .class-panel {
       position: absolute;
       top: 0;
       left: 0;
-      padding: 0 15px;
-      right: 450px;
-      bottom: 180px;
-      background-image: url("./assets/img/class-panel-bg.jpg");
+      margin: 25px 150px;
+      bottom: 220px;
+      background-size: cover;
+      background-repeat: no-repeat;
       .class-work {
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        z-index: 1000;
+        z-index: 1;
       }
       .start-btn {
         position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         left: 0;
         top: 0;
         bottom: 0;
         right: 0;
         margin: auto;
-        background: blue;
+        background: #0A83C4;
         border-radius: 5px;
-        width: 100px;
-        height: 50px;
-        line-height: 50px;
-        color: red;
-        text-align: center;
-        font-size: 22px;
+        width: 178px;
+        height: 42px;
+        // line-height: 42px;
+        color: #fff;
+        // text-align: center;
+        font-size: 14px;
         cursor: pointer;
       }
 
@@ -453,61 +519,87 @@ export default {
     }
     .kejian {
       position: absolute;
-      width: 150px;
+      // width: 150px;
       top: 0;
-      right: 300px;
-      bottom: 180px;
-      padding: 8px 12px;
+      // right: 290px;
+      bottom: 40px;
+      // padding: 8px 12px;
+      height: calc(100% - 40px);
       box-sizing: border-box;
       background: #fff;
       z-index: 1;
     }
     .media-panel {
       position: absolute;
+      display: flex;
+      align-items: center;
       width: 290px;
       top: 0;
       right: 0;
       bottom: 0px;
-      padding: 8px 12px;
+      // padding: 8px 12px;
       box-sizing: border-box;
-      background: #fff;
+      // background: #fff;
+      background: #2B313E !important;
       box-shadow: -2px 0 6px rgba(0, 0, 0, 0.1);
-      z-index: 1;
-
+      z-index: 999;
       .live-teacher-player {
         background: #000;
         height: 200px;
         width: 100%;
       }
-
       .wrap {
         position: absolute;
         top: 0;
         bottom: 0;
         right: 0;
         left: 0;
-        background: #fff;
+        // background: #fff;
         // padding: 10px 10px 0 10px;
 
         #live-teacher-player {
           height: 200px;
         }
       }
+      .wrap-hide {
+        // position: ab;
+        display: flex;
+        align-items: center;
+        width: 30px;
+        height: 74px;
+        background: #000000;
+        opacity: 0.3;
+        border-radius: 4px;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 100;
+      }
     }
     .zuoye {
       position: absolute;
       left: 0;
       // width: 100%;
-      right: 290px;
-      bottom: 40px;
-      height: 140px;
+      // right: 290px;
+      bottom: 46px;
+      height: 180px;
       // display: flex;
       // justify-content: space-between;
       // padding: 0 15px;
       // align-items: center;
       font-size: 15px;
+      margin: 0 10px;
       color: #bdc6cf;
       z-index: 0;
+      .title {
+        width: 100%;
+        height: 40px;
+        background: #2B3240;
+        padding-left: 20px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
       .item {
 
       }
@@ -515,10 +607,10 @@ export default {
     .footer {
       position: absolute;
       left: 0;
-      right: 290px;
+      // right: 290px;
       bottom: 0;
       height: 40px;
-      background-color: #424242;
+      background-color: #2B313E;
       display: flex;
       justify-content: space-between;
       padding: 0 15px;
@@ -526,7 +618,68 @@ export default {
       font-size: 15px;
       color: #bdc6cf;
       z-index: 0;
+      color: #fff;
+      font-size: 14px;
     }
+    .wrap-hide1 {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        top: 44%;
+        right: 0px;
+        width: 30px;
+        height: 74px;
+        background: #000000;
+        opacity: 0.3;
+        border-radius: 4px;
+        z-index: 100;
+        text-align: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+  }
+  .bjy-sidebar {
+    background: #282D3A !important;
+    color: red !important;
+  }
+
+  .bjy-catalogue small {
+    font-size: 12px !important;
+    color: #fff;
+  }
+  .bjy-active > small{
+    color: #04AEFF !important;
+  }
+
+  .tab-title {
+    // border: 4px solid #3C4353;
+    background: #464E5B;
+    border-bottom: 0px !important;
+    margin-bottom: 4px;
+    font-size: 14px;
+    color: #fff;
+  }
+  .tab-title .active {
+    background: #1A96D8;
+    border-bottom: 0px;
+  }
+  .tab-container {
+    // margin: 0px 5px !important;
+    // background: #262C38 !important;
   }
 }
+// .bjy-catalogue {
+//         height: calc(100% - 100px);
+//   }
+//   .bjy-doc-list {
+//     height: calc(100% - 110px) !important;
+//   }
+  .bjy-doc-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 90px !important;
+    overflow: auto
+  }
 </style>
