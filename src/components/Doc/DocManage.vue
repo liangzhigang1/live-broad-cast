@@ -63,10 +63,21 @@ export default {
   created() {
     eventEmitter
       .on(eventEmitter.DOC_REMOVE, (event, data) => {
-        console.log('jiaoxueadfff', BJY.Catalogue);
-        console.log('1112222333', data);
+        console.log('1', data);
         // BJY.DocumentManage.methods.deleteDoc(data)
         BJY.Catalogue.methods.getCurrentFileIndex(data.number)
+      }).
+      on(eventEmitter.DOC_ATTACH_REQ, (event, data) => {
+        console.log('2', data);
+        // BJY.DocumentManage.methods.deleteDoc(data)
+        // BJY.Catalogue.methods.getCurrentFileIndex(data.number)
+      }).
+      on(eventEmitter.DOC_IMAGE_LOAD_END, (event, data) => {
+        console.log('10', data);
+        console.log('111111', event);
+
+        // BJY.DocumentManage.methods.deleteDoc(data)
+        // BJY.Catalogue.methods.getCurrentFileIndex(data.number)
       })
   },
   mounted() {
@@ -91,41 +102,41 @@ export default {
       // 上传文件最大字节
       maxSize: MAXSIZE,
       // 上传失败回调
-      onFileUploadFail: function (data) {
-          // data.isPPT 上传的文件是否是 PPT
-          alert('上传失败');
-      },
-      // 文件大小错误
-      onFileSizeError: function (data) {
-          // data.isPPT 上传的文件是否是 PPT
-          alert('上传文件太大');
-      },
-      // 文件类型错误
-      onFileTypeError: function (data) {
-          // data.isPPT 上传的文件是否是 PPT
-          alert('文件类型错误');
-      },
-      // 文件名错误
-      onFileNameError: function (data) {
-          // data.isPPT 上传的文件是否是 PPT
-          alert('文件名错误');
-      },
-      // 点击文件 item 回调
-      onFileItemClick: function (data) {
-          // data.index  文档在列表中的索引
-          // data.doc 文档对象
-          console.log('111111222222222222222211222222222');
-      },
-      onMediaFileOpenClick: function () {
-          // data.index  文档在列表中的索引
-          // data.doc 文档对象
-          console.log('22222222');
-      },
-      onFilePreviewClick: function () {
-          // data.index  文档在列表中的索引
-          // data.doc 文档对象
-          console.log('33333333');
-      },
+      // onFileUploadFail: function (data) {
+      //     // data.isPPT 上传的文件是否是 PPT
+      //     alert('上传失败');
+      // },
+      // // 文件大小错误
+      // onFileSizeError: function (data) {
+      //     // data.isPPT 上传的文件是否是 PPT
+      //     alert('上传文件太大');
+      // },
+      // // 文件类型错误
+      // onFileTypeError: function (data) {
+      //     // data.isPPT 上传的文件是否是 PPT
+      //     alert('文件类型错误');
+      // },
+      // // 文件名错误
+      // onFileNameError: function (data) {
+      //     // data.isPPT 上传的文件是否是 PPT
+      //     alert('文件名错误');
+      // },
+      // // 点击文件 item 回调
+      // onFileItemClick: function (data) {
+      //     // data.index  文档在列表中的索引
+      //     // data.doc 文档对象
+      //     console.log('111111222222222222222211222222222');
+      // },
+      // onMediaFileOpenClick: function () {
+      //     // data.index  文档在列表中的索引
+      //     // data.doc 文档对象
+      //     console.log('22222222');
+      // },
+      // onFilePreviewClick: function () {
+      //     // data.index  文档在列表中的索引
+      //     // data.doc 文档对象
+      //     console.log('33333333');
+      // },
       onFileOpenClick: function (data) {
         // data.index  文档在列表中的索引
         // data.doc 文档对象
@@ -148,17 +159,18 @@ export default {
         // BJY.Catalogue.changeSize()
 
         // eventEmitter.trigger(eventEmitter.WINDOW_RESIZE);
-        eventEmitter.trigger(eventEmitter.DOC_REMOVE, data)
-
+        // BJY.Catalogue.methods.getCurrentFileIndex(data.number)
+        // console.log('BJY.Catalogue', BJY.Catalogue.methods.changePage(data,data));
+        console.log('BJY.DocumentManage', BJY.DocumentManage.methods.deleteDoc(data));
       },
-      onTabChange: function () {
-          // data.index  文档在列表中的索引
-          // data.doc 文档对象
-          console.log('444444444');
-      },
-      onFilePreviewClick: function (params) {
-        console.log('111131231231231231231231333', params);
-      },
+      // onTabChange: function () {
+      //     // data.index  文档在列表中的索引
+      //     // data.doc 文档对象
+      //     console.log('444444444');
+      // },
+      // onFilePreviewClick: function (params) {
+      //   console.log('111131231231231231231231333', params);
+      // },
       onDocDeleteClick: function (data) {
           // data.index  文档在列表中的索引
           // data.doc 文档对象
@@ -192,6 +204,7 @@ export default {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
   z-index: 11110;
   background-color: red;
+  // background: #2B313E !important;
 }
 .bjy-document-manage {
   background: #2B313E !important;

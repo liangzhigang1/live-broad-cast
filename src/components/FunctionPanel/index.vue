@@ -31,6 +31,13 @@
         举手
       </div>
 
+      <!-- 举手菜单 -->
+      <div v-if="isStudent" class="btn-wrap">
+        <!-- <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe603;</span>
+        举手 -->
+        <SpeakApplyMenu />
+      </div>
+
       
 
       <div v-if="!isStudent" @click="toggleRollCall">
@@ -56,12 +63,7 @@
         
         {{ statusTip }}
       </div>
-      <!-- 举手菜单 -->
-      <div v-if="isStudent" class="btn-wrap">
-        <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe603;</span>
-        举手
-        <SpeakApplyMenu />
-      </div>
+      
       <!-- <div v-if="isStudent" class="btn-wrap">
         <SpeakApplyMenu />
       </div> -->
