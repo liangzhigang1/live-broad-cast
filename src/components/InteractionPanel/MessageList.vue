@@ -4,10 +4,9 @@
     </div> -->
     <div class="message-list">
     </div>
-    <div class="xx">
+    <div v-show="isTeacher" class="xx">
       <el-switch @change="changeSwitch" v-model="value1" inactive-text="全体禁言" >
-</el-switch> 
-      
+      </el-switch>    
     </div>
     <div class="message-sender">
     </div>
@@ -25,12 +24,12 @@ export default {
     return {
       value1: false,
       stop: false,
+      isTeacher: auth.isTeacher()
     }
   },
   methods: {
     changeSwitch () {
       var _this = this
-      console.log('value1', this.value1);
       eventEmitter.trigger(eventEmitter.MESSAGE_SEND_FORBID_ALL_CHANGE_TRIGGER, {
         value: _this.value1,
       });
@@ -172,7 +171,7 @@ export default {
     position: absolute;
     bottom: 132px;
     right: 10px;
-    z-index: 100000;
+    z-index: 9;
   }
 
   .bjy-message-sender {

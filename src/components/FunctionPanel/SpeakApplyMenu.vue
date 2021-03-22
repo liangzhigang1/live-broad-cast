@@ -67,6 +67,11 @@ export default {
       replace: false,
       // 举手按钮被点击
       onApplyClick: () => {
+        console.log('11111111111111111111111111111111111111111');
+        // if (!store.get("class.forbidAll")) {
+        //   this.$Toast('举手被禁止');
+        //   return;
+        // }
         if (store.get('class.started')) {
           if (userData.active().length >= 2) {
             this.$Toast('当前上台人数已满')
@@ -77,6 +82,7 @@ export default {
           this.$Toast(language.TIP_CLASS_NOT_START)
           return
         }
+
       },
       // 取消举手被点击
       onCancelClick: () => {

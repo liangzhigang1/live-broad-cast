@@ -8,14 +8,14 @@
       </div>
 
       <!-- 录制按钮 -->
-      <div class="btn-wrap">
+      <div v-if="!isStudent" class="btn-wrap">
         <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe6b0;</span>
         <Record class="bjy-custom-record" v-if="!isStudent" />
       </div>
       
 
       <!-- 屏幕分享菜单 -->
-      <div class="btn-wrap">
+      <div v-if="!isStudent" class="btn-wrap">
         <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe675;</span>
         <ShareScreenMenu />
       </div>
@@ -53,23 +53,28 @@
       <!-- 上下课 -->
       <div v-if="!isStudent" @click="toggleClassStart">
         <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe609;</span>
+        
         {{ statusTip }}
       </div>
       <!-- 举手菜单 -->
       <div v-if="isStudent" class="btn-wrap">
         <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe603;</span>
+        举手
         <SpeakApplyMenu />
       </div>
+      <!-- <div v-if="isStudent" class="btn-wrap">
+        <SpeakApplyMenu />
+      </div> -->
 
       
 
       <!-- 弹幕按钮 -->
-      <div @click="toggleBarrage()" class="btn-wrap">
+      <!-- <div @click="toggleBarrage()" class="btn-wrap">
         <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe603;</span>
         <i v-if="isBarrageOn" class="icon icon-barrage-on"></i>
         <i v-else class="icon icon-barrage-off"></i>
         {{ barrageState }}
-      </div>
+      </div> -->
 
       <!-- 线路切换 -->
       <select

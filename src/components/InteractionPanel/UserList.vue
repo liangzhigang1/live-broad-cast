@@ -20,7 +20,6 @@ export default {
   methods: {
     // 生成浮层
     setLayer(useParameterUser, e) {
-      console.log('11111');
       let ele = $(".bjy-user-layer");
       if (!this.userLayerInstance || (this.userLayerInstance && !ele[0])) {
         if (this.userLayerInstance && !ele[0]) {
@@ -146,7 +145,7 @@ export default {
         // 组内用户不允许被强制发言
         return BJY.auth.isTeacher() && (target ? !target.group : true);
       };
-      $(".user-list").delegate(".bjy-user-item", "mouseover", function (e) {
+      $(".user-list").delegate(".bjy-user-item", "click", function (e) {
         event.stopPropagation();
         let number = e.currentTarget.dataset.number;
         let user = BJY.data.user.findByNumber(number);
@@ -198,6 +197,15 @@ export default {
 //@import url() 引入公共css类
 .bjy-user-layer {
   position: fixed;
+  z-index: 99999 !important;
+  background: #313847 !important;
+  color: #fff !important;
+}
+.bjy-tooltip.bjy-default {
+  border: 0px !important;
+}
+.bjy-label {
+  color: #fff !important;
 }
 .bjy-user-item {
   background: none !important;

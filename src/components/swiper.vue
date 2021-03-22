@@ -8,12 +8,15 @@
                     <img style="width: 100%;height: 100%" src="../assets/img/8.png" />
                   </span>
                   <span v-if="item.type == 'png'">
+                    <span style="color: red;font-size: 25px">照片</span>
                     <img style="width: 100%;height: 100%" src="../assets/img/8.png" />
                   </span>
                   <span v-if="item.type == 'mp3'">
-                    <img style="width: 100%;height: 100%" src="../assets/img/8.png" />
+                    <span style="color: red;font-size: 25px">mp3</span>
+                    <img style="width: 100%;height: 80%" src="../assets/img/8.png" />
                   </span>
                   <span v-if="item.type == 'mp4'">
+                    <span style="color: red;font-size: 25px">mp4</span>
                     <img style="width: 100%;height: 100%" src="../assets/img/8.png" />
                   </span>
                 </div>
@@ -86,15 +89,14 @@ export default {
         }
       },
       workList: [
-        {studentName: '张三', type: 'ppt', src: '../assets/img/大数据监控大屏参考.pptx'},
-        {studentName: '李四', type: 'png', src: '../assets/img/8.png'},
-        {studentName: '王五', type: 'mp3', src: '../assets/img/dfh.mp3'},
-        {studentName: '赵六', type: 'mp4', src: '../assets/img/exampleobject.mp4'},
-        {studentName: '赵六', type: 'mp4', src: '../assets/img/exampleobject.mp4'},
-        {studentName: '赵六', type: 'mp4', src: '../assets/img/exampleobject.mp4'},
-        {studentName: '赵六', type: 'mp4', src: '../assets/img/exampleobject.mp4'},
-        {studentName: '赵六', type: 'mp4', src: '../assets/img/exampleobject.mp4'},
-        {studentName: '赵六', type: 'mp4', src: '../assets/img/exampleobject.mp4'},
+        {studentName: '李四', type: 'png', src: require('../assets/img/8.png')},
+        {studentName: '王五', type: 'mp3', src: require('../assets/img/dfh.mp3')},
+        {studentName: '赵六', type: 'mp4', src: require('../assets/img/exampleobject.mp4')},
+        {studentName: '赵六', type: 'mp3', src: require('../assets/img/dfh.mp3')},
+        {studentName: '赵六', type: 'png', src: require('../assets/img/8.png')},
+        {studentName: '赵六', type: 'mp4', src: require('../assets/img/exampleobject.mp4')},
+        {studentName: '赵六', type: 'mp4', src: require('../assets/img/exampleobject.mp4')},
+        {studentName: '赵六', type: 'mp4', src: require('../assets/img/exampleobject.mp4')},
       ]
     };
   },
@@ -114,12 +116,15 @@ export default {
   width: 50px !important;
   background: #000000;
   opacity: 0.5 !important;
+  z-index: 1000 !important;
+  border: 0px !important;
 }
 .swiper-button-prev:after {
   font-size: 20px !important;
   color: #fff;
   // opacity: 1;
   font-weight: bold;
+  border: 0px !important;
 }
 .swiper-button-next {
   padding: 72px 5px;
@@ -128,6 +133,9 @@ export default {
   width: 50px !important;
   background: #000000;
   opacity: 0.5;
+  z-index: 1000 !important;
+
+
 }
 .swiper-button-next:after {
   font-size: 20px !important;

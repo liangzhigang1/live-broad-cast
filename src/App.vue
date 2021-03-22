@@ -5,12 +5,8 @@
       <HorseLamp />
       <div class="container">
         <div :style="{backgroundImage: showStartBtn ? 'url(' + src + ')' : '', right: hudong ? '290px' : '0px', bottom: zuoye ? '220px' : '80px'}" class="class-panel">
+            <!-- 老师播放器 -->
           <TeacherPlayer v-show="!showStartBtn" />
-          <div v-if="work" class="class-work">
-            <img v-if="work.type == 'png'" style="width: 100%;height: 100%" src="../src/assets/img/8.png" />
-            <div id="media-player" >
-            </div>
-          </div>
         <div v-show="showStartBtn" class="start-btn" @click="handleClassStart">
           <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe675;</span>
           上课
@@ -35,7 +31,6 @@
       <div v-show="hudong" class="media-panel-main">
         <div class="media-panel">
           <div class="wrap">
-            <!-- 老师播放器 -->
             <WhiteBorad />
 
             <!-- 互动区 -->
@@ -59,6 +54,7 @@
           </div>
       <!-- 模态框组件 -->
       <ModalPanel />
+      <WorkPanel :visible.sync="visible" :work="work" />
     </div>
   </div>
 </template>
@@ -86,6 +82,8 @@ import DocList from "./components/Doc/DocList";
 import language from "./language/main.js";
 // swiper
 import swiper from './components/swiper'
+// swiper
+import WorkPanel from './components/WorkPanel'
 
 const eventEmitter = BJY.eventEmitter;
 const auth = BJY.auth;
@@ -104,11 +102,13 @@ export default {
     HorseLamp,
     ModalPanel,
     DocList,
-    swiper
+    swiper,
+    WorkPanel
   },
   
   data() {
     return {
+      visible: false,
       zuoye: true,
       hudong: true,
       mediaPlayer: null,
@@ -198,12 +198,21 @@ export default {
       .on(
         eventEmitter.MESSAGE_SEND_FORBID_ALL_CHANGE,
         function (event, data) {
-            console.log('xxxxxxxxxx', data);
-            if (data.forbidAll) {
-                // 是否全体禁言
-            } else {
-              data.forbidAll = true
-            }
+            // console.log('xxxxxxxxxx', data);
+            // if (data.forbidAll) {
+            //     // 是否全体禁言
+            //     data.forbidAll = false
+            // } else {
+            //   data.forbidAll = true
+            // }
+        }
+    )
+    .on(
+        eventEmitter.SPEAK_APPLY_FORBID_ALL_CHANGE,
+        function (event, data) {
+          console.log('data:', data);
+          console.log('event:', event);
+          store.set("class.forbidAll", data.forbidAll);
         }
     )
       // 监听初始化事件，初始化组件
@@ -282,31 +291,6 @@ export default {
     },
     showWork () {
       this.zuoye = !this.zuoye
-    },
-    open () {
-        if (!this.mediaPlayer) {
-            this.mediaPlayer = BJY.NewMediaPlayer.create({
-                element: $('#media-player1'),
-                volume: 100,
-                // 是否可以拖动，默认为false
-                draggale: true,
-                // 可拖动区域的选择符，默认为Body元素
-                draggableRectSelector: 'body',
-                replace: false,
-                onCloseButtonClick: () => {
-                    this.close()
-                },
-                onMinimizeButtonClick: () => {
-                    this.visible = false;
-                },
-                onPlayFileFail: function () {
-                    alert('打开文件失败');
-                }
-            });
-        }
-    },
-    close () {
-        this.mediaPlayer = null;
     },
     init() {
       // 默认demo教室-学生端
@@ -442,9 +426,7 @@ export default {
     },
     swiperClick (params) {
       this.work = params
-      this.mediaPlayer ? this.close() : this.open()
-      console.log('111111', this.mediaPlayer);
-      console.log('this.work', this.work);
+      this.visible = true
     }
   },
 };
@@ -682,4 +664,40 @@ export default {
     bottom: 90px !important;
     overflow: auto
   }
+  .bjy-message-sender {
+    z-index: 9999 !important;
+  }
+  .bjy-message-sender {
+    z-index: 9999 !important;
+  }
+
+  // .bjy-avatar-wrap {
+  //   -webkit-animation: twinkling 1s infinite ease-in-out
+  // }
+  // .animated {
+  //   -webkit-animation-duration: 1s;
+  //   animation-duration: 1s;
+  //   -webkit-animation-fill-mode: both;
+  //   animation-fill-mode: both
+  // }
+  // @-webkit-keyframes twinkling{
+  //   0%{
+  //     opacity: 0.5;
+  //   }
+  //   100%{
+  //     opacity: 1;
+  //   }
+  // }
+  // @keyframes twinkling {
+  //   0%{
+  //     opacity: 0.5;
+  //   }
+  //   100%{
+  //     opacity: 1;
+  //   }
+  // }
+  .bjy-body {
+  background: #313847 !important;
+  color: #fff !important;
+}
 </style>
