@@ -36,12 +36,12 @@ export default {
     }
   },
   mounted() {
-    BJY.Catalogue.create({
+    var xx = BJY.Catalogue.create({
       element: $(".bjy-doc-list"),
       thumbnailWidth: 100,
       // hasWhiteboard: true,
     });
-    console.log('BJY.Catalogue', BJY.Catalogue);
+    store.set("class.catalogue", xx);
   },
 };
 </script>

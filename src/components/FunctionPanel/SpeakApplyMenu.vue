@@ -1,7 +1,7 @@
 <!-- 举手组件 -->
 <template>
-    <div id="menu-speak-apply">
-    </div>
+  <div id="menu-speak-apply">
+  </div>
 </template>
 
 <script>
@@ -62,42 +62,46 @@ export default {
         }
       )
 
-    BJY.SpeakApplyMenu.create({
-      element: $('#menu-speak-apply'),
-      replace: false,
-      // 举手按钮被点击
-      onApplyClick: () => {
-        console.log('11111111111111111111111111111111111111111');
-        // if (!store.get("class.forbidAll")) {
-        //   this.$Toast('举手被禁止');
-        //   return;
-        // }
-        if (store.get('class.started')) {
-          if (userData.active().length >= 2) {
-            this.$Toast('当前上台人数已满')
-            return;
-          }
-          BJY.userSpeak.startApply(10 * 1000)
-        } else {
-          this.$Toast(language.TIP_CLASS_NOT_START)
-          return
-        }
 
-      },
-      // 取消举手被点击
-      onCancelClick: () => {
-        BJY.userSpeak.cancelApply()
-      },
-      // 结束发言被点击
-      onStopClick: () => {
-        BJY.userSpeak.stopSpeak(BJY.store.get('user.id'))
-        eventEmitter.trigger(eventEmitter.STOP_SPEAK_TRIGGER)
-        eventEmitter.trigger(eventEmitter.MEDIA_SWITCH_TRIGGER, {
-          videoOn: false,
-          audioOn: false
-        })
-      }
-    })
+    // 创建举手按钮（用于学生举手）
+    if (!store.get('class.isFree')) { // 判断房间是否可以自由发言，可自由发言的房间无需举手
+        var speakApplyMenu = BJY.SpeakApplyMenu.create({
+            element: $('#menu-speak-apply'),
+            // replace: false,
+              // 举手按钮被点击
+              onApplyClick: () => {
+                console.log('11111111111111111111111111111111111111111');
+                if (!store.get("class.forbidAll")) {
+                  this.$Toast('举手被禁止');
+                  return;
+                }
+                if (store.get('class.started')) {
+                  if (userData.active().length >= 2) {
+                    this.$Toast('当前上台人数已满')
+                    return;
+                  }
+                  BJY.userSpeak.startApply(10 * 1000)
+                } else {
+                  this.$Toast(language.TIP_CLASS_NOT_START)
+                  return
+                }
+
+              },
+              // 取消举手被点击
+              onCancelClick: () => {
+                BJY.userSpeak.cancelApply()
+              },
+              // 结束发言被点击
+              onStopClick: () => {
+                BJY.userSpeak.stopSpeak(BJY.store.get('user.id'))
+                eventEmitter.trigger(eventEmitter.STOP_SPEAK_TRIGGER)
+                eventEmitter.trigger(eventEmitter.MEDIA_SWITCH_TRIGGER, {
+                  videoOn: false,
+                  audioOn: false
+                })
+              }
+        });
+    }
   },
   beforeDestroy () {}
 }

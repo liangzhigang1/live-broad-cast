@@ -74,10 +74,8 @@ export default {
       }).
       on(eventEmitter.DOC_IMAGE_LOAD_END, (event, data) => {
         console.log('10', data);
-        console.log('111111', event);
-
-        // BJY.DocumentManage.methods.deleteDoc(data)
-        // BJY.Catalogue.methods.getCurrentFileIndex(data.number)
+        console.log('111111', this);
+        // BJY.Catalogue.methods.togglePageList(true, data)
       })
   },
   mounted() {
@@ -86,58 +84,14 @@ export default {
     // 上传文件最大字节
     var MAXSIZE = 1000000 * 5;
     // 创建文档管理组件
-    BJY.DocumentManage.create({
+    let xx = BJY.DocumentManage.create({
       // 父容器
       element: $('#bjy-document-manage'),
       // 文档操作按钮是图标还是文字
-      // needIconButton: true,
-      // canPreviewFile: true,
-      // allowLoginCloudDisk: true,
-      // canUploadZipFile: true,
-      // hasCloudTab: true,
-      // hasHomeworkTab: true,
-      // needIconButton: true,
-
 
       // 上传文件最大字节
       maxSize: MAXSIZE,
-      // 上传失败回调
-      // onFileUploadFail: function (data) {
-      //     // data.isPPT 上传的文件是否是 PPT
-      //     alert('上传失败');
-      // },
-      // // 文件大小错误
-      // onFileSizeError: function (data) {
-      //     // data.isPPT 上传的文件是否是 PPT
-      //     alert('上传文件太大');
-      // },
-      // // 文件类型错误
-      // onFileTypeError: function (data) {
-      //     // data.isPPT 上传的文件是否是 PPT
-      //     alert('文件类型错误');
-      // },
-      // // 文件名错误
-      // onFileNameError: function (data) {
-      //     // data.isPPT 上传的文件是否是 PPT
-      //     alert('文件名错误');
-      // },
-      // // 点击文件 item 回调
-      // onFileItemClick: function (data) {
-      //     // data.index  文档在列表中的索引
-      //     // data.doc 文档对象
-      //     console.log('111111222222222222222211222222222');
-      // },
-      // onMediaFileOpenClick: function () {
-      //     // data.index  文档在列表中的索引
-      //     // data.doc 文档对象
-      //     console.log('22222222');
-      // },
-      // onFilePreviewClick: function () {
-      //     // data.index  文档在列表中的索引
-      //     // data.doc 文档对象
-      //     console.log('33333333');
-      // },
-      onFileOpenClick: function (data) {
+      onFileOpenClick: (data) => {
         // data.index  文档在列表中的索引
         // data.doc 文档对象
         console.log('4444444444', data);
@@ -146,32 +100,10 @@ export default {
           _this.pptVideoSwitch();
         }
         store.set("class.xx", false);
-
-        // let xx = `fid=${data.id}&partner_id=83228320&room_id=21032159047031&timestamp=1615996147&partner_key=dBn3oMMrE68/kijw20wg6JGHWGUcUkwh2Fi57N9r26v4R3QbWYQ66/IUchj/pyzlKM9l1WjgNEnLqCWFc2Lzvtp6xhlI`
-        // console.log('12312312', _this.$md5(xx))
-        // let sign = _this.$md5(xx)
-        // let params = { partner_id: 83228320, room_id: 21032159047031, fid: data.id, timestamp: 1615996147, sign: sign}
-        // _bindDocApi(params).then((response) => {
-        //   console.log('response' , response);
-        // })
-        // eventEmitter.trigger(eventEmitter.DOC_FIT_CHANGE_TRIGGER)
-        // eventEmitter.trigger(eventEmitter.DOC_ALL_REQ);
-        // BJY.Catalogue.changeSize()
-
-        // eventEmitter.trigger(eventEmitter.WINDOW_RESIZE);
-        // BJY.Catalogue.methods.getCurrentFileIndex(data.number)
-        // console.log('BJY.Catalogue', BJY.Catalogue.methods.changePage(data,data));
-        console.log('BJY.DocumentManage', BJY.DocumentManage.methods.deleteDoc(data));
+        console.log('444444444', store.get("class.catalogue"));
+        store.get("class.catalogue").togglePageList(true, data.id)
       },
-      // onTabChange: function () {
-      //     // data.index  文档在列表中的索引
-      //     // data.doc 文档对象
-      //     console.log('444444444');
-      // },
-      // onFilePreviewClick: function (params) {
-      //   console.log('111131231231231231231231333', params);
-      // },
-      onDocDeleteClick: function (data) {
+      onDocDeleteClick:  (data) => {
           // data.index  文档在列表中的索引
           // data.doc 文档对象
           console.log('55555555', data);
@@ -185,7 +117,7 @@ export default {
       },
     });
     setTimeout(() => {
-      console.log('BJY.DocumentManage', BJY.DocumentManage);
+      console.log('BJY.DocumentManage', xx);
     }, 1000);
   },
   beforeDestroy() {},

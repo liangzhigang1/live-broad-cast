@@ -31,15 +31,6 @@
         举手
       </div>
 
-      <!-- 举手菜单 -->
-      <div v-if="isStudent" class="btn-wrap">
-        <!-- <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe603;</span>
-        举手 -->
-        <SpeakApplyMenu />
-      </div>
-
-      
-
       <div v-if="!isStudent" @click="toggleRollCall">
         <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe61e;</span>
         评价
@@ -57,6 +48,15 @@
     </div>
 
     <div class="right">
+
+
+      <!-- 举手菜单 -->
+      <div v-if="isStudent">
+        <!-- <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe603;</span>
+        举手 -->
+        <SpeakApplyMenu />
+      </div>
+
       <!-- 上下课 -->
       <div v-if="!isStudent" @click="toggleClassStart">
         <span style="font-size: 16px;margin-right:4px" class="iconfont">&#xe609;</span>
@@ -233,16 +233,14 @@ export default {
   .left,
   .right {
     display: flex;
+
     & > * {
       margin: 0 4px;
       padding: 2px 12px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      background: #424D5C;
-      border-radius: 2px;
-      height: 30px;
-      border: 2px solid #485260;
+
       // &:hover {
       //   border-radius: 4px;
       //   background-color: rgba(255, 255, 255, 0.3);
@@ -257,6 +255,7 @@ export default {
 
       .bjy-menu-switcher {
         padding: 0;
+
         .bjy-label {
           margin-left: 0;
           vertical-align: unset;
@@ -276,12 +275,7 @@ export default {
   }
 
   .bjy-spacer {
-    margin-right: 100px;
-    background: none;
-    border: 0px;
-  }
-  .bjy-record .bjy-menu-switcher {
-    color: #fff !important;
+    margin-right: 200px;
   }
 }
 </style>
